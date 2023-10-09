@@ -20,6 +20,8 @@
     ],
     "paths": {
       "@env": ["./env.js"],
+      "@common/*": ["./src/common/*"],
+      "@lib/*": ["./src/lib/*"],
       "@auth/*": ["./src/features/auth/*"],
       "@api": ["./src/api-client.ts"]
     }

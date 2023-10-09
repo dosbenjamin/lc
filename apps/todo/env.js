@@ -8,8 +8,8 @@ export const env = createEnv({
     API_URL: z.string().min(1).url(),
   },
   runtimeEnv: {
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-    API_URL: process.env.API_URL,
+    NEXTAUTH_URL: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+    NEXTAUTH_SECRET: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
+    API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 });

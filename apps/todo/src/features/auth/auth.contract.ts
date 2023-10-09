@@ -1,16 +1,16 @@
-import { SignInCredentialsTypeSchema } from '@auth/auth.schemas';
+import { AccessSchema, SignInCredentialsTypeSchema, SignInSchema, SignUpSchema } from '@auth/auth.schemas';
+import { ProblemDetails } from '@common/common.types';
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 
 const contract = initContract();
+
 export const authContract = contract.router(
   {
-    access: {
+    init: {
       method: 'POST',
       path: '/access',
-      body: z.object({
-        mobilePhoneNumber: z.string().min(1).trim(),
-      }),
+      body: AccessSchema,
       responses: {
         200: z.object({
           mobilePhoneNumber: z.string(),
@@ -19,38 +19,33 @@ export const authContract = contract.router(
           signInCredentialsType: SignInCredentialsTypeSchema,
           mustCompleteSignUpInfo: z.boolean(),
         }),
+        400: contract.type<ProblemDetails<z.infer<typeof AccessSchema>>>(),
       },
     },
     signUp: {
       method: 'POST',
       path: '/signup',
-      body: z.object({
-        mobilePhoneNumber: z.string().min(1).trim(),
-        verificationCode: z.string().length(4).trim(),
-      }),
+      body: SignUpSchema,
       responses: {
         200: z.object({
           userId: z.string().uuid(),
           mobilePhoneNumber: z.string(),
         }),
+        400: contract.type<ProblemDetails<z.infer<typeof SignUpSchema>>>(),
       },
     },
     signIn: {
       method: 'POST',
       path: '/signin',
-      body: z.object({
-        credentialsType: SignInCredentialsTypeSchema,
-        mobilePhoneNumber: z.string().min(1),
-        verificationCode: z.string().nullable(),
-        password: z.string().nullable(),
-      }),
+      body: SignInSchema,
       responses: {
         200: z.object({
           accessToken: z.string(),
-          validUntil: z.date(),
+          validUntil: z.string(),
           refreshToken: z.string(),
-          refreshTokenValidUntil: z.date(),
+          refreshTokenValidUntil: z.string(),
         }),
+        400: contract.type<ProblemDetails<z.infer<typeof SignInSchema>>>(),
       },
     },
   },

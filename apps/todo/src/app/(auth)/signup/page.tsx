@@ -1,24 +1,11 @@
-'use client';
+import { authOptions } from '@auth/auth.options';
+import { getServerSession } from 'next-auth';
 
-import type { FormEventHandler } from 'react';
+const SignUpPage = async () => {
+  const session = await getServerSession(authOptions);
+  console.log(session);
 
-const SignUpPage = () => {
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
-
-    const response = await fetch('http://localhost:3000/api/auth/callback/credentials', {
-      method: 'POST',
-    }).then(async (r) => await r.json());
-
-    console.log(response);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input name="tel" type="tel" placeholder="num" />
-      <button>Submit</button>
-    </form>
-  );
+  return <div>SignUp</div>;
 };
 
 export default SignUpPage;
