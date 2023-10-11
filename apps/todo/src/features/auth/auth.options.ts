@@ -1,5 +1,6 @@
 import { apiClient } from '@api';
-import { SignInSchema } from '@auth/auth.schemas';
+import { AUTH_CREDENTIALS_PROVIDER_SIGN_IN_ID, AUTH_CREDENTIALS_PROVIDER_SIGN_UP_ID } from '@auth/auth.constants';
+import { SignInSchema, SignUpSchema } from '@auth/auth.schemas';
 import { nextRoutes } from '@common/common.helpers';
 import { env } from '@env';
 import { AuthOptions } from 'next-auth';
@@ -10,6 +11,7 @@ export const authOptions: AuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   providers: [
     Credentials({
+      id: AUTH_CREDENTIALS_PROVIDER_SIGN_IN_ID,
       authorize: async (credentials) => {
         const { body, status } = await apiClient.auth.signIn.mutation({
           body: credentials as z.infer<typeof SignInSchema>,
@@ -23,8 +25,29 @@ export const authOptions: AuthOptions = {
           refreshToken: body.refreshToken,
           refreshTokenValidUntil: body.refreshTokenValidUntil,
           validUntil: body.validUntil,
-          email: 'benjamin.dossantos@certi-it.be',
-          name: 'Benjamin Dos Santos',
+        };
+      },
+      credentials: {},
+    }),
+    Credentials({
+      id: AUTH_CREDENTIALS_PROVIDER_SIGN_UP_ID,
+      authorize: async (credentials) => {
+        const { body: signUpBody, status: signUpStatus } = await apiClient.auth.signUp.mutation({
+          body: credentials as z.infer<typeof SignUpSchema>,
+        });
+
+        const { body: signInBody, status: signInStatus } = await apiClient.auth.signIn.mutation({
+          body: credentials as z.infer<typeof SignInSchema>,
+        });
+
+        if (signUpStatus !== 200 || signInStatus !== 200) return null;
+
+        return {
+          id: signUpBody.userId,
+          accessToken: signInBody.accessToken,
+          refreshToken: signInBody.refreshToken,
+          refreshTokenValidUntil: signInBody.refreshTokenValidUntil,
+          validUntil: signInBody.validUntil,
         };
       },
       credentials: {},

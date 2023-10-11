@@ -1,3 +1,3 @@
 export const authMutationKeys = {
-  getAuth: () => ['auth'],
+  getAuthFlow: () => ['auth-flow'],
 };

@@ -1,11 +1,10 @@
-import { authOptions } from '@auth/auth.options';
-import { getServerSession } from 'next-auth';
+import { AuthFlowProvider } from '@auth/components/auth-flow-provider';
+import { AuthFlowFormDispatcher } from '@auth/components/auth-flow-form-dispatcher';
 
-const SignUpPage = async () => {
-  const session = await getServerSession(authOptions);
-  console.log(session);
-
-  return <div>SignUp</div>;
-};
+const SignUpPage = () => (
+  <AuthFlowProvider>
+    <AuthFlowFormDispatcher />
+  </AuthFlowProvider>
+);
 
 export default SignUpPage;

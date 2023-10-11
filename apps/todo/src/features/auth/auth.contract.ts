@@ -1,4 +1,10 @@
-import { AccessSchema, SignInCredentialsTypeSchema, SignInSchema, SignUpSchema } from '@auth/auth.schemas';
+import {
+  AuthInitSchema,
+  SignInCredentialsTypeSchema,
+  SignInSchema,
+  SignUpInfoSchema,
+  SignUpSchema,
+} from '@auth/auth.schemas';
 import { ProblemDetails } from '@common/common.types';
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
@@ -10,7 +16,7 @@ export const authContract = contract.router(
     init: {
       method: 'POST',
       path: '/access',
-      body: AccessSchema,
+      body: AuthInitSchema,
       responses: {
         200: z.object({
           mobilePhoneNumber: z.string(),
@@ -19,7 +25,7 @@ export const authContract = contract.router(
           signInCredentialsType: SignInCredentialsTypeSchema,
           mustCompleteSignUpInfo: z.boolean(),
         }),
-        400: contract.type<ProblemDetails<z.infer<typeof AccessSchema>>>(),
+        400: contract.type<ProblemDetails<z.infer<typeof AuthInitSchema>>>(),
       },
     },
     signUp: {
@@ -32,6 +38,17 @@ export const authContract = contract.router(
           mobilePhoneNumber: z.string(),
         }),
         400: contract.type<ProblemDetails<z.infer<typeof SignUpSchema>>>(),
+      },
+    },
+    signUpInfo: {
+      method: 'PUT',
+      path: '/:userId/signup',
+      body: SignUpInfoSchema,
+      pathParams: z.object({
+        userId: z.string().min(1).uuid(),
+      }),
+      responses: {
+        400: contract.type<ProblemDetails<z.infer<typeof SignUpInfoSchema>>>(),
       },
     },
     signIn: {

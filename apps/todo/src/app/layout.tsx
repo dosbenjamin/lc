@@ -7,7 +7,7 @@ type RootLayoutProps = PropsWithChildren;
 
 const RootLayout = ({ children }: RootLayoutProps) => (
   <html lang="en">
-    <body className="bg-primary">
+    <body className="bg-primary text-primary-foreground min-h-screen antialiased">
       <QueryClientProvider>
         <SessionProvider>{children}</SessionProvider>
       </QueryClientProvider>

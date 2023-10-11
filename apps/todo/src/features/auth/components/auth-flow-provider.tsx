@@ -2,11 +2,13 @@
 
 import { authContract } from '@auth/auth.contract';
 import { authMutationKeys } from '@auth/auth.helpers';
-import { AuthFlow, AuthFlowStepType, AuthFlowType, SignInCredentialsType } from '@auth/auth.types';
+import { AuthFlow, AuthFlowFormType, AuthFlowType, SignInCredentialsType } from '@auth/auth.types';
 import { AuthFlowContext } from '@auth/contexts/auth-flow-context';
-import { useQueryClient } from '@tanstack/react-query';
+import { nextRoutes } from '@common/common.helpers';
+import { Mutation, useQueryClient } from '@tanstack/react-query';
 import type { ClientInferResponseBody } from '@ts-rest/core';
-import { type PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { type PropsWithChildren, useEffect, useMemo, useState, useCallback } from 'react';
 
 type AuthFlowProviderProps = PropsWithChildren;
 
@@ -27,55 +29,73 @@ const authFlowDispatcher: [
   ],
 ];
 
+const isAuthMutationSucceded = (mutation: Mutation | undefined) =>
+  mutation?.options.mutationKey?.toString() === authMutationKeys.getAuthFlow().toString() &&
+  mutation?.state.status === 'success';
+
 export const AuthFlowProvider = ({ children }: AuthFlowProviderProps) => {
-  const [authFlow, setAuthFlow] = useState<AuthFlow>();
-  const [authFlowStepType, setAuthFlowStepType] = useState<AuthFlowStepType>();
+  const router = useRouter();
+
+  const [authFlow, setAuthFlow] = useState<AuthFlow>({
+    formType: AuthFlowFormType.AuthInit,
+  });
 
   const queryClient = useQueryClient();
+  const mutationCache = queryClient.getMutationCache();
 
-  const authFlowSteps = useMemo<Record<AuthFlowType, AuthFlowStepType[]>>(
+  const authFlowForms = useMemo<Record<AuthFlowType, AuthFlowFormType[]>>(
     () => ({
-      [AuthFlowType.SignUp]: [AuthFlowStepType.SignUp, AuthFlowStepType.SignUpInfo],
+      [AuthFlowType.SignUp]: [AuthFlowFormType.AuthInit, AuthFlowFormType.SignUp, AuthFlowFormType.SignUpInfo],
       [AuthFlowType.SmsCodeSignIn]: [
-        AuthFlowStepType.SmsCodeSignIn,
-        ...(authFlow?.mustCompleteSignUpInfo ? [AuthFlowStepType.SignUpInfo] : []),
+        AuthFlowFormType.AuthInit,
+        AuthFlowFormType.SmsCodeSignIn,
+        ...(authFlow?.mustCompleteSignUpInfo ? [AuthFlowFormType.SignUpInfo] : []),
       ],
-      [AuthFlowType.PasswordSignIn]: [AuthFlowStepType.PasswordSignIn],
+      [AuthFlowType.PasswordSignIn]: [AuthFlowFormType.AuthInit, AuthFlowFormType.PasswordSignIn],
     }),
     [authFlow],
   );
 
+  const getNextAuthFlowFormType = useCallback(
+    (authFlow: AuthFlow) => {
+      if (!authFlow.type) return;
+
+      const currentAuthFlow = authFlowForms[authFlow.type];
+      const currentAuthFlowFormIndex = currentAuthFlow.indexOf(authFlow.formType);
+      const nextAuthFlowFormIndex = currentAuthFlowFormIndex + 1;
+
+      console.log(currentAuthFlow.length, nextAuthFlowFormIndex);
+
+      return {
+        type: currentAuthFlow[nextAuthFlowFormIndex],
+        isLast: currentAuthFlow.length === nextAuthFlowFormIndex,
+      };
+    },
+    [authFlowForms],
+  );
+
   const initAuthFlow = (authInit: ClientInferResponseBody<typeof authContract.init, 200>): void => {
     const flowType = authFlowDispatcher.find(([predicate]) => predicate(authInit));
-    setAuthFlow({ type: flowType?.[1], ...authInit });
+
+    const nextAuthFlow = { ...authFlow, ...authInit, type: flowType?.[1] };
+    const nextAuthFlowFormType = getNextAuthFlowFormType(nextAuthFlow)?.type;
+
+    setAuthFlow({ ...nextAuthFlow, formType: nextAuthFlowFormType ?? nextAuthFlow.formType });
   };
 
-  if (!authFlowStepType && authFlow?.type) {
-    const currentAuthFlow = authFlowSteps[authFlow.type];
-    setAuthFlowStepType(currentAuthFlow[0]);
-  }
-
   useEffect(() => {
-    if (!authFlow?.type) return;
-
-    const currentAuthFlow = authFlowSteps[authFlow.type];
-    const mutationCache = queryClient.getMutationCache();
-
     const unsubscribe = mutationCache.subscribe(({ mutation }) => {
-      const isAuthFlowMutation = mutation?.options.mutationKey?.toString() === authMutationKeys.getAuth().toString();
-      const isAuthFlowMutationSuccess = mutation?.state.status === 'success';
+      const nextAuthFlowForm = getNextAuthFlowFormType(authFlow);
 
-      if (!isAuthFlowMutation || !isAuthFlowMutationSuccess || !authFlowStepType) return;
+      if (!isAuthMutationSucceded(mutation) || !nextAuthFlowForm) return;
 
-      const currentAuthFlowStepIndex = currentAuthFlow.indexOf(authFlowStepType);
-      const currentAuthFlowStepType = currentAuthFlow[currentAuthFlowStepIndex + 1];
-      currentAuthFlowStepType ? setAuthFlowStepType(currentAuthFlowStepType) : console.log('completed');
+      nextAuthFlowForm?.isLast
+        ? router.replace(nextRoutes.getDashboard())
+        : setAuthFlow((authFlow) => ({ ...authFlow, formType: nextAuthFlowForm?.type }));
     });
 
     return () => unsubscribe();
-  }, [queryClient, authFlow, authFlowSteps, authFlowStepType]);
+  }, [router, authFlow, mutationCache, getNextAuthFlowFormType]);
 
-  return (
-    <AuthFlowContext.Provider value={{ authFlowStepType, authFlow, initAuthFlow }}>{children}</AuthFlowContext.Provider>
-  );
+  return <AuthFlowContext.Provider value={{ authFlow, initAuthFlow }}>{children}</AuthFlowContext.Provider>;
 };

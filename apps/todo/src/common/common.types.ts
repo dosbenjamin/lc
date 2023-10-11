@@ -2,8 +2,8 @@ import type { ErrorHttpStatusCode } from '@ts-rest/core';
 
 type ErrorCodeList = 'Sms.CodeVerificationFailed';
 
-type ErrorCodeDescriptor<Code extends string> = {
-  code: Code;
+type ErrorCodeDescriptor<ErrorCode extends string> = {
+  code: ErrorCode;
   description: string;
 };
 

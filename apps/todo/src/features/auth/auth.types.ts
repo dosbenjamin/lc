@@ -8,13 +8,14 @@ export const AuthFlowType = {
 } as const;
 export type AuthFlowType = (typeof AuthFlowType)[keyof typeof AuthFlowType];
 
-export const AuthFlowStepType = {
+export const AuthFlowFormType = {
+  AuthInit: 'AuthInit',
   SignUp: 'SignUp',
   SignUpInfo: 'SignUpInfo',
   SmsCodeSignIn: 'SmsCodeSignIn',
   PasswordSignIn: 'PasswordSignIn',
 } as const;
-export type AuthFlowStepType = (typeof AuthFlowStepType)[keyof typeof AuthFlowStepType];
+export type AuthFlowFormType = (typeof AuthFlowFormType)[keyof typeof AuthFlowFormType];
 
 export const SignInCredentialsType = {
   SmsCode: 'SmsCode',
@@ -23,5 +24,6 @@ export const SignInCredentialsType = {
 export type SignInCredentialsType = (typeof SignInCredentialsType)[keyof typeof SignInCredentialsType];
 
 export type AuthFlow = {
-  type: AuthFlowType | undefined;
-} & ClientInferResponseBody<typeof authContract.init, 200>;
+  type?: AuthFlowType;
+  formType: AuthFlowFormType;
+} & Partial<ClientInferResponseBody<typeof authContract.init, 200>>;
