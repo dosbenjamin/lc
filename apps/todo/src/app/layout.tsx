@@ -1,3 +1,4 @@
+import '@styles/globals.css';
 import { SessionProvider } from '@auth/components/session-provider';
 import { QueryClientProvider } from '@lib/react-query/query-client-provider';
 import type { PropsWithChildren } from 'react';
@@ -6,7 +7,7 @@ type RootLayoutProps = PropsWithChildren;
 
 const RootLayout = ({ children }: RootLayoutProps) => (
   <html lang="en">
-    <body>
+    <body className="bg-primary">
       <QueryClientProvider>
         <SessionProvider>{children}</SessionProvider>
       </QueryClientProvider>

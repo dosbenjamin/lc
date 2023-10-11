@@ -21,6 +21,7 @@
     "paths": {
       "@env": ["./env.js"],
       "@common/*": ["./src/common/*"],
+      "@styles/*": ["./src/styles/*"],
       "@lib/*": ["./src/lib/*"],
       "@auth/*": ["./src/features/auth/*"],
       "@api": ["./src/api-client.ts"]
