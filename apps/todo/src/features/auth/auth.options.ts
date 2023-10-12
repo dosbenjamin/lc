@@ -24,6 +24,7 @@ export const authOptions: AuthOptions = {
 
         return {
           id: '348dad0c-b321-4e31-60a5-08dbca63b6b8',
+          mobilePhoneNumber: (credentials as z.infer<typeof SignInSchema>).mobilePhoneNumber,
           accessToken: body.accessToken,
           refreshToken: body.refreshToken,
           refreshTokenValidUntil: body.refreshTokenValidUntil,
@@ -63,6 +64,7 @@ export const authOptions: AuthOptions = {
 
         return {
           id: signUpBody.userId,
+          mobilePhoneNumber: signUpBody.mobilePhoneNumber,
           accessToken: signInBody.accessToken,
           refreshToken: signInBody.refreshToken,
           refreshTokenValidUntil: signInBody.refreshTokenValidUntil,
@@ -81,6 +83,7 @@ export const authOptions: AuthOptions = {
         token.refreshToken = user.refreshToken;
         token.refreshTokenValidUntil = user.refreshTokenValidUntil;
         token.userId = user.id;
+        token.userMobilePhoneNumber = user.mobilePhoneNumber;
       }
 
       return token;
@@ -91,6 +94,7 @@ export const authOptions: AuthOptions = {
       session.refreshToken = token.refreshToken;
       session.refreshTokenValidUntil = token.refreshTokenValidUntil;
       session.user.id = token.userId;
+      session.user.mobilePhoneNumber = token.userMobilePhoneNumber;
 
       return session;
     },

@@ -88,7 +88,7 @@ export const AuthFlowProvider = ({ children }: AuthFlowProviderProps) => {
       if (!isAuthMutationSucceded(mutation) || !nextAuthFlowForm) return;
 
       nextAuthFlowForm?.isLast
-        ? router.replace(nextRoutes.getDashboard())
+        ? router.replace(nextRoutes.getTodos())
         : setAuthFlow((authFlow) => ({ ...authFlow, formType: nextAuthFlowForm?.type }));
     });
 

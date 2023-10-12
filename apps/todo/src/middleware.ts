@@ -6,5 +6,5 @@ export const middleware = withAuth({
 });
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/todos/:path*'],
 };
