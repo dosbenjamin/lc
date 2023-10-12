@@ -20,7 +20,7 @@ export const AuthFlowSignUpForm = () => {
     },
   });
 
-  const { mutateAsync: signUp } = useSignUp();
+  const { mutateAsync: signUp, isLoading: isSigningUp } = useSignUp();
   const handleSignUp = form.handleSubmit(async (values) => signUp(values));
 
   return (
@@ -39,13 +39,13 @@ export const AuthFlowSignUpForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} />
+                <Input placeholder="Confirmation code" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button variant="secondary">{form.formState.isSubmitting ? 'Loading' : 'Submit'}</Button>
+        <Button variant="secondary">{isSigningUp ? 'Loading' : 'Submit'}</Button>
       </form>
     </Form>
   );

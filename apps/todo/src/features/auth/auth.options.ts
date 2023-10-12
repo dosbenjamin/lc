@@ -1,11 +1,14 @@
 import { apiClient } from '@api';
 import { AUTH_CREDENTIALS_PROVIDER_SIGN_IN_ID, AUTH_CREDENTIALS_PROVIDER_SIGN_UP_ID } from '@auth/auth.constants';
 import { SignInSchema, SignUpSchema } from '@auth/auth.schemas';
+import { SignInCredentialsType } from '@auth/auth.types';
 import { nextRoutes } from '@common/common.helpers';
 import { env } from '@env';
 import { AuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
+
+const FAKE_PASSWORD = 'Certinergie@2023';
 
 export const authOptions: AuthOptions = {
   secret: env.NEXTAUTH_SECRET,
@@ -20,7 +23,7 @@ export const authOptions: AuthOptions = {
         if (status !== 200) return null;
 
         return {
-          id: '1',
+          id: '348dad0c-b321-4e31-60a5-08dbca63b6b8',
           accessToken: body.accessToken,
           refreshToken: body.refreshToken,
           refreshTokenValidUntil: body.refreshTokenValidUntil,
@@ -36,11 +39,27 @@ export const authOptions: AuthOptions = {
           body: credentials as z.infer<typeof SignUpSchema>,
         });
 
-        const { body: signInBody, status: signInStatus } = await apiClient.auth.signIn.mutation({
-          body: credentials as z.infer<typeof SignInSchema>,
+        if (signUpStatus !== 200) return null;
+
+        const { status: setPasswordStatus } = await apiClient.auth.setPassword.mutation({
+          body: {
+            password: FAKE_PASSWORD,
+            userId: signUpBody.userId,
+          },
+          params: {
+            userId: signUpBody.userId,
+          },
         });
 
-        if (signUpStatus !== 200 || signInStatus !== 200) return null;
+        const { body: signInBody, status: signInStatus } = await apiClient.auth.signIn.mutation({
+          body: {
+            password: FAKE_PASSWORD,
+            mobilePhoneNumber: (credentials as z.infer<typeof SignUpSchema>).mobilePhoneNumber,
+            credentialsType: SignInCredentialsType.Password,
+          },
+        });
+
+        if (signInStatus !== 200 || setPasswordStatus !== 204) return null;
 
         return {
           id: signUpBody.userId,
@@ -54,12 +73,14 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
+    signIn: ({ user }) => !!user,
     jwt({ token, user }) {
       if (user) {
         token.accessToken = user.accessToken;
         token.validUntil = user.validUntil;
         token.refreshToken = user.refreshToken;
         token.refreshTokenValidUntil = user.refreshTokenValidUntil;
+        token.userId = user.id;
       }
 
       return token;
@@ -69,6 +90,7 @@ export const authOptions: AuthOptions = {
       session.validUntil = token.validUntil;
       session.refreshToken = token.refreshToken;
       session.refreshTokenValidUntil = token.refreshTokenValidUntil;
+      session.user.id = token.userId;
 
       return session;
     },

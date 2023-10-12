@@ -40,7 +40,7 @@ export const AuthFlowSmsCodeSignInForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} />
+                <Input placeholder="Confirmation code" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

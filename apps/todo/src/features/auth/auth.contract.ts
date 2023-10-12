@@ -1,5 +1,6 @@
 import {
   AuthInitSchema,
+  SetPasswordSchema,
   SignInCredentialsTypeSchema,
   SignInSchema,
   SignUpInfoSchema,
@@ -58,11 +59,22 @@ export const authContract = contract.router(
       responses: {
         200: z.object({
           accessToken: z.string(),
-          validUntil: z.string(),
+          validUntil: z.any(),
           refreshToken: z.string(),
-          refreshTokenValidUntil: z.string(),
+          refreshTokenValidUntil: z.any(),
         }),
         400: contract.type<ProblemDetails<z.infer<typeof SignInSchema>>>(),
+      },
+    },
+    setPassword: {
+      method: 'PUT',
+      path: '/:userId/password',
+      body: SetPasswordSchema,
+      pathParams: z.object({
+        userId: z.string().min(1).uuid(),
+      }),
+      responses: {
+        400: contract.type<ProblemDetails<z.infer<typeof SetPasswordSchema>>>(),
       },
     },
   },

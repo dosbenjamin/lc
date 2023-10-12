@@ -21,11 +21,11 @@ export const AuthFlowSignUpInfoForm = () => {
     },
   });
 
-  const { mutateAsync: signUpInfo, isLoading: isCompletingSignUpInfo } = apiClient.auth.signUpInfo.useMutation({
+  const { mutateAsync: signUpInfo, isLoading: isSigningUpInfo } = apiClient.auth.signUpInfo.useMutation({
     mutationKey: authMutationKeys.getAuthFlow(),
   });
 
-  const handleSignUp = form.handleSubmit(async (values) => {
+  const handleSignUpInfo = form.handleSubmit(async (values) => {
     await signUpInfo({
       body: values,
       params: { userId: values.userId },
@@ -34,7 +34,7 @@ export const AuthFlowSignUpInfoForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleSignUpInfo}>
         <h1 className="text-3xl">Enter your personal informations</h1>
         <FormField
           control={form.control}
@@ -43,7 +43,7 @@ export const AuthFlowSignUpInfoForm = () => {
             <FormItem>
               <FormLabel>Firstname</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input placeholder="Firstname" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,7 +56,7 @@ export const AuthFlowSignUpInfoForm = () => {
             <FormItem>
               <FormLabel>Lastname</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input placeholder="Lastname" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -69,13 +69,13 @@ export const AuthFlowSignUpInfoForm = () => {
             <FormItem>
               <FormLabel>Email address</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input type="email" placeholder="Email address" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button variant="secondary">{isCompletingSignUpInfo ? 'Loading' : 'Submit'}</Button>
+        <Button variant="secondary">{isSigningUpInfo ? 'Loading' : 'Submit'}</Button>
       </form>
     </Form>
   );

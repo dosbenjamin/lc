@@ -5,4 +5,8 @@ import { PropsWithChildren } from 'react';
 
 type SessionProviderProps = PropsWithChildren;
 
-export const SessionProvider = ({ children }: SessionProviderProps) => <Provider>{children}</Provider>;
+export const SessionProvider = ({ children }: SessionProviderProps) => (
+  <Provider refetchWhenOffline={false} refetchOnWindowFocus={false}>
+    {children}
+  </Provider>
+);

@@ -38,7 +38,7 @@ export const AuthFlowInitForm = () => {
             <FormItem>
               <FormLabel>Phone number</FormLabel>
               <FormControl>
-                <Input type="tel" {...field} />
+                <Input type="tel" placeholder="Phone number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

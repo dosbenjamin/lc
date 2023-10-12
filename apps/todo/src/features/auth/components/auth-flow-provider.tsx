@@ -64,8 +64,6 @@ export const AuthFlowProvider = ({ children }: AuthFlowProviderProps) => {
       const currentAuthFlowFormIndex = currentAuthFlow.indexOf(authFlow.formType);
       const nextAuthFlowFormIndex = currentAuthFlowFormIndex + 1;
 
-      console.log(currentAuthFlow.length, nextAuthFlowFormIndex);
-
       return {
         type: currentAuthFlow[nextAuthFlowFormIndex],
         isLast: currentAuthFlow.length === nextAuthFlowFormIndex,

@@ -16,7 +16,7 @@ export const SignUpInfoSchema = z.object({
   userId: z.string().min(1).uuid(),
   firstname: z.string().min(1).max(100),
   lastname: z.string().min(1).max(100),
-  emailAddress: z.string().email().optional(),
+  emailAddress: z.string().email(),
 });
 
 export const SignInSchema = z.object({
@@ -24,4 +24,9 @@ export const SignInSchema = z.object({
   mobilePhoneNumber: z.string().min(1),
   verificationCode: z.string().optional(),
   password: z.string().optional(),
+});
+
+export const SetPasswordSchema = z.object({
+  userId: z.string().min(1).uuid(),
+  password: z.string().min(8),
 });
