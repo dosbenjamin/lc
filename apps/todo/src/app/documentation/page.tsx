@@ -1,4 +1,4 @@
-import { authOptions } from '@auth/auth.options';
+import { authOptions } from '@users/auth.options';
 import { ThemeSwitcher } from '@theme/components/theme-switcher';
 import { getServerSession } from 'next-auth';
 
@@ -6,7 +6,7 @@ const DocumentationPage = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <main className="flex justify-between items-start">
+    <main className="container flex justify-between items-start py-8">
       <article className="flex flex-col gap-4 [&_h1]:text-3xl [&_h2]:text-2xl [&_li]:list-inside [&_li]:list-disc">
         <h1>Documentation</h1>
         <h2>Librairies utilisées</h2>

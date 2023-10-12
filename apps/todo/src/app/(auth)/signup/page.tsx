@@ -1,5 +1,5 @@
-import { AuthFlowProvider } from '@auth/components/auth-flow-provider';
-import { AuthFlowFormDispatcher } from '@auth/components/auth-flow-form-dispatcher';
+import { AuthFlowProvider } from '@users/components/auth-flow-provider';
+import { AuthFlowFormDispatcher } from '@users/components/auth-flow-form-dispatcher';
 
 const SignUpPage = () => (
   <AuthFlowProvider>

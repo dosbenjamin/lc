@@ -2,26 +2,12 @@
 
 import { RadioGroup } from '@common/components/ui/radio-group';
 import { RadioGroupItem } from '@radix-ui/react-radio-group';
+import { THEMES } from '@theme/theme.constants';
 import { ThemeType } from '@theme/theme.types';
 import { Circle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { CSSProperties } from 'react';
-
-const themes = [
-  {
-    theme: ThemeType.Dark,
-    color: '#000',
-  },
-  {
-    theme: ThemeType.Light,
-    color: '#FFF',
-  },
-  {
-    theme: ThemeType.DarkBlue,
-    color: '#3B82F6',
-  },
-];
 
 export const ThemeSwitcher = () => {
   const { data: session, update: updateSession } = useSession();
@@ -41,7 +27,7 @@ export const ThemeSwitcher = () => {
         onValueChange={handleChange}
         className="grid-cols-3"
       >
-        {themes.map(({ theme, color }) => (
+        {THEMES.map(({ theme, color }) => (
           <RadioGroupItem
             value={theme}
             key={theme}

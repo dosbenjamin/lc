@@ -1,4 +1,4 @@
-import { authOptions } from '@auth/auth.options';
+import { authOptions } from '@users/auth.options';
 import { DEFAULT_THEME } from '@theme/theme.constants';
 import { ThemeType } from '@theme/theme.types';
 import { getServerSession } from 'next-auth';

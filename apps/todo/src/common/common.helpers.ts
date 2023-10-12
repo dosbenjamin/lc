@@ -5,6 +5,9 @@ export const nextRoutes = {
   getLogin: () => '/login',
   getSignUp: () => '/signup',
   getTodos: () => '/todos',
+  getSecretTodos: () => '/todos/secret',
+  getCreateTodo: () => '/todos/create',
+  getTodosApi: () => '/api/todos',
 };
 
 export const cn = cx;

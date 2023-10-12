@@ -23,8 +23,9 @@
       "@common/*": ["./src/common/*"],
       "@styles/*": ["./src/styles/*"],
       "@lib/*": ["./src/lib/*"],
-      "@auth/*": ["./src/features/auth/*"],
+      "@users/*": ["./src/features/users/*"],
       "@theme/*": ["./src/features/theme/*"],
+      "@todos/*": ["./src/features/todos/*"],
       "@api": ["./src/api-client.ts"]
     }
   },

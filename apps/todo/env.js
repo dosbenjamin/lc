@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
   shared: {
-    NEXTAUTH_URL: z.string().min(1).url(),
+    NEXTAUTH_URL: z.string().min(1).url().optional(),
     NEXTAUTH_SECRET: z.string().min(1),
     API_URL: z.string().min(1).url(),
   },

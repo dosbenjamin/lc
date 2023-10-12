@@ -1,6 +1,6 @@
 import '@styles/globals.css';
-import { SessionProvider } from '@auth/components/session-provider';
-import { QueryClientProvider } from '@lib/react-query/query-client-provider';
+import { SessionProvider } from '@users/components/session-provider';
+import { QueryClientProvider } from '@common/components/query-client-provider';
 import type { PropsWithChildren } from 'react';
 import { getTheme } from '@theme/theme.helpers';
 
@@ -11,7 +11,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
 
   return (
     <html lang="en" data-theme={theme}>
-      <body className="bg-background text-foreground min-h-screen antialiased p-8">
+      <body className="bg-background text-foreground min-h-screen antialiased">
         <QueryClientProvider>
           <SessionProvider>{children}</SessionProvider>
         </QueryClientProvider>
