@@ -1,4 +1,5 @@
-import NextAuth from 'next-auth';
+import type { ThemeType } from '@theme/theme.types';
+import NextAuth, { Theme } from 'next-auth';
 
 declare module 'next-auth' {
   interface User {
@@ -7,6 +8,7 @@ declare module 'next-auth' {
     validUntil: string;
     refreshToken: string;
     refreshTokenValidUntil: string;
+    theme: ThemeType;
   }
 
   interface Session {
@@ -22,6 +24,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     userMobilePhoneNumber: string;
     userId: string;
+    userTheme: ThemeType;
     accessToken: string;
     validUntil: string;
     refreshToken: string;

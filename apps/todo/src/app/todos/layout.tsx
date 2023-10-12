@@ -1,5 +1,6 @@
 import { authOptions } from '@auth/auth.options';
 import { SignOutButton } from '@auth/components/sign-out-button';
+import { ThemeSwitcher } from '@theme/components/theme-switcher';
 import { getServerSession } from 'next-auth';
 import { PropsWithChildren } from 'react';
 
@@ -10,8 +11,11 @@ const TodosLayout = async ({ children }: TodosLayoutProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex justify-between">
-        <h1>Todo</h1>
+      <header className="flex justify-between items-center">
+        <div className="flex gap-8 items-center">
+          <h1>Todo</h1>
+          <ThemeSwitcher />
+        </div>
         <div className="flex gap-4">
           <p>Logged as {session?.user.mobilePhoneNumber}</p>
           <SignOutButton />

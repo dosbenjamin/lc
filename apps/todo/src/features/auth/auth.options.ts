@@ -4,6 +4,7 @@ import { SignInSchema, SignUpSchema } from '@auth/auth.schemas';
 import { SignInCredentialsType } from '@auth/auth.types';
 import { nextRoutes } from '@common/common.helpers';
 import { env } from '@env';
+import { DEFAULT_THEME } from '@theme/theme.constants';
 import { AuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
@@ -24,6 +25,7 @@ export const authOptions: AuthOptions = {
 
         return {
           id: '348dad0c-b321-4e31-60a5-08dbca63b6b8',
+          theme: DEFAULT_THEME,
           mobilePhoneNumber: (credentials as z.infer<typeof SignInSchema>).mobilePhoneNumber,
           accessToken: body.accessToken,
           refreshToken: body.refreshToken,
@@ -64,6 +66,7 @@ export const authOptions: AuthOptions = {
 
         return {
           id: signUpBody.userId,
+          theme: DEFAULT_THEME,
           mobilePhoneNumber: signUpBody.mobilePhoneNumber,
           accessToken: signInBody.accessToken,
           refreshToken: signInBody.refreshToken,
@@ -76,7 +79,7 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     signIn: ({ user }) => !!user,
-    jwt({ token, user }) {
+    jwt({ token, user, session }) {
       if (user) {
         token.accessToken = user.accessToken;
         token.validUntil = user.validUntil;
@@ -84,6 +87,12 @@ export const authOptions: AuthOptions = {
         token.refreshTokenValidUntil = user.refreshTokenValidUntil;
         token.userId = user.id;
         token.userMobilePhoneNumber = user.mobilePhoneNumber;
+        token.userMobilePhoneNumber = user.mobilePhoneNumber;
+        token.userTheme = user.theme;
+      }
+
+      if (session?.userTheme) {
+        token.userTheme = session.userTheme;
       }
 
       return token;
@@ -95,6 +104,7 @@ export const authOptions: AuthOptions = {
       session.refreshTokenValidUntil = token.refreshTokenValidUntil;
       session.user.id = token.userId;
       session.user.mobilePhoneNumber = token.userMobilePhoneNumber;
+      session.user.theme = token.userTheme;
 
       return session;
     },

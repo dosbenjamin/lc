@@ -24,6 +24,7 @@
       "@styles/*": ["./src/styles/*"],
       "@lib/*": ["./src/lib/*"],
       "@auth/*": ["./src/features/auth/*"],
+      "@theme/*": ["./src/features/theme/*"],
       "@api": ["./src/api-client.ts"]
     }
   },

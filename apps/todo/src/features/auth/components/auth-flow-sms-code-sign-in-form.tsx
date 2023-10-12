@@ -46,7 +46,7 @@ export const AuthFlowSmsCodeSignInForm = () => {
             </FormItem>
           )}
         />
-        <Button variant="secondary">{isSigningIn ? 'Loading' : 'Submit'}</Button>
+        <Button>{isSigningIn ? 'Loading' : 'Submit'}</Button>
       </form>
     </Form>
   );

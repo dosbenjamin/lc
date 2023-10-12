@@ -45,7 +45,7 @@ export const AuthFlowSignUpForm = () => {
             </FormItem>
           )}
         />
-        <Button variant="secondary">{isSigningUp ? 'Loading' : 'Submit'}</Button>
+        <Button>{isSigningUp ? 'Loading' : 'Submit'}</Button>
       </form>
     </Form>
   );

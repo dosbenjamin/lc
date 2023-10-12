@@ -44,7 +44,7 @@ export const AuthFlowInitForm = () => {
             </FormItem>
           )}
         />
-        <Button variant="secondary">{isInitializingAuth ? 'Loading' : 'Submit'}</Button>
+        <Button>{isInitializingAuth ? 'Loading' : 'Submit'}</Button>
       </form>
     </Form>
   );
