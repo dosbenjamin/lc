@@ -2,16 +2,15 @@ import '@styles/globals.css';
 import { SessionProvider } from '@auth/components/session-provider';
 import { QueryClientProvider } from '@lib/react-query/query-client-provider';
 import type { PropsWithChildren } from 'react';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@auth/auth.options';
+import { getTheme } from '@theme/theme.helpers';
 
 type RootLayoutProps = PropsWithChildren;
 
 const RootLayout = async ({ children }: RootLayoutProps) => {
-  const session = await getServerSession(authOptions);
+  const theme = await getTheme();
 
   return (
-    <html lang="en" data-theme={session?.user.theme}>
+    <html lang="en" data-theme={theme}>
       <body className="bg-background text-foreground min-h-screen antialiased p-8">
         <QueryClientProvider>
           <SessionProvider>{children}</SessionProvider>
