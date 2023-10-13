@@ -1,0 +1,18 @@
+.custom {
+  --ag-background-color: theme('colors.background');
+  --ag-foreground-color: theme('colors.foreground');
+  --ag-header-background-color: theme('colors.background');
+  --ag-header-foreground-color: theme('colors.foreground');
+  --ag-odd-row-background-color: theme('colors.foreground / 10%');
+  --ag-row-border-width: none;
+  --ag-borders: none;
+}
+
+.custom :global(.ag-header) {
+  border-bottom: 1px solid;
+}
+
+.custom :global(.ag-cell) {
+  display: flex;
+  align-items: center;
+}

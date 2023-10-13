@@ -3,7 +3,7 @@ import { authOptions } from '@users/auth.options';
 import { USER_AUTHORIZATIONS } from '@users/users.constants';
 import { UserRole } from '@users/users.types';
 import type { Session } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 export const authMutationKeys = {
   authFlow: () => ['auth-flow'],
@@ -21,6 +21,10 @@ export const isAuthenticated = async (): Promise<boolean> => !!(await getSession
 
 export const redirectIfAuthentificated = async (url: string): Promise<void> => {
   const session = await getSession();
-
   session && redirect(url);
+};
+
+export const userAuthorizationGuard = async (role: UserRole): Promise<void> => {
+  const session = await getSession();
+  !isUserAuthorized(role, session?.user.role) && notFound();
 };

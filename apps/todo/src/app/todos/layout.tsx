@@ -45,7 +45,7 @@ const TodosLayout = async ({ children }: TodosLayoutProps) => {
             </Button>
           </nav>
         </aside>
-        <main className="flex flex-col gap-4">{children}</main>
+        <main className="flex flex-col gap-4 w-full h-[800px]">{children}</main>
       </div>
     </div>
   );
