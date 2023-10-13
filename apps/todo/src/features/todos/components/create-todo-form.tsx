@@ -1,6 +1,6 @@
 'use client';
 
-import { UserAuthorizationGuard } from '@users/components/user-authorization-guard';
+import { UserAuthorizationGuard } from '@users/components/user-authorization-guard.client';
 import { nextRoutes } from '@common/common.helpers';
 import { Button } from '@common/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@common/components/ui/form';
@@ -12,6 +12,7 @@ import { CreateTodoSchema } from '@todos/todos.schemas';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { UserRole } from '@users/users.types';
 
 export const CreateTodoForm = () => {
   const router = useRouter();
@@ -55,7 +56,7 @@ export const CreateTodoForm = () => {
             <div className="flex flex-col gap-2">
               <FormLabel>Secret</FormLabel>
               <FormControl>
-                <UserAuthorizationGuard minimumRole="Admin">
+                <UserAuthorizationGuard role={UserRole.Admin}>
                   {(isAuthorized) => (
                     <Switch checked={field.value} onCheckedChange={field.onChange} disabled={!isAuthorized} />
                   )}

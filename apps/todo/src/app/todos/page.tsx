@@ -7,10 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from '@common/components/ui/table';
-import { inMemoryTodos } from '@todos/todos.data';
+import { getTodos } from '@todos/todos.helpers';
 
 const TodosPage = async () => {
-  const todos = Array.from(inMemoryTodos.values()).filter(({ isSecret }) => !isSecret);
+  const todos = getTodos();
 
   return (
     <>

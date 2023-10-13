@@ -1,7 +1,5 @@
-import { authOptions } from '@users/auth.options';
 import { DEFAULT_THEME } from '@theme/theme.constants';
 import { ThemeType } from '@theme/theme.types';
-import { getServerSession } from 'next-auth';
+import { getSession } from '@users/users.helpers';
 
-export const getTheme = async (): Promise<ThemeType> =>
-  (await getServerSession(authOptions))?.user.theme ?? DEFAULT_THEME;
+export const getTheme = async (): Promise<ThemeType> => (await getSession())?.user.theme ?? DEFAULT_THEME;

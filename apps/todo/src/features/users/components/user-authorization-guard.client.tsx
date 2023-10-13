@@ -1,20 +1,18 @@
 'use client';
 
-import { isUserAuthorized } from '@users/users.helpers';
 import { UserRole } from '@users/users.types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@common/components/ui/tooltip';
-import { useSession } from 'next-auth/react';
 import { ReactNode } from 'react';
+import { useAuthorization } from '@users/hooks/use-authorization';
 
 type UserAuthorizationGuardProps = {
   children: (isAuthorized: boolean) => ReactNode;
-  minimumRole: UserRole;
+  role: UserRole;
 };
 
-export const UserAuthorizationGuard = ({ children, minimumRole }: UserAuthorizationGuardProps) => {
-  const { data: session } = useSession();
-
-  const isAuthorized = isUserAuthorized(minimumRole, session?.user.role);
+export const UserAuthorizationGuard = ({ children, role }: UserAuthorizationGuardProps) => {
+  const isUserAuthorized = useAuthorization();
+  const isAuthorized = isUserAuthorized(role);
 
   return (
     <TooltipProvider>
