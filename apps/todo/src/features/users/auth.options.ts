@@ -96,8 +96,11 @@ export const authOptions: AuthOptions = {
         token.userRole = user.role;
       }
 
-      if (session) {
+      if (session?.userTheme) {
         token.userTheme = session.userTheme;
+      }
+
+      if (session?.userRole) {
         token.userRole = session.userRole;
       }
 
