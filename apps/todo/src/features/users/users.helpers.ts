@@ -3,6 +3,7 @@ import { authOptions } from '@users/auth.options';
 import { USER_AUTHORIZATIONS } from '@users/users.constants';
 import { UserRole } from '@users/users.types';
 import type { Session } from 'next-auth';
+import { signOut } from 'next-auth/react';
 import { notFound, redirect } from 'next/navigation';
 
 export const authMutationKeys = {
@@ -28,3 +29,11 @@ export const userAuthorizationGuard = async (role: UserRole): Promise<void> => {
   const session = await getSession();
   !isUserAuthorized(role, session?.user.role) && notFound();
 };
+
+export const isTokenValid = async (): Promise<boolean> => {
+  const session = await getSession();
+  return !!(session?.accessTokenValidUntil && Date.parse(session.accessTokenValidUntil) > Date.now());
+};
+
+// Don't work server-side
+export const refreshToken = signOut;

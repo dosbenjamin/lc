@@ -1,14 +1,37 @@
-import { authContract } from '@users/users.contract';
+import { usersContract } from '@users/users.contract';
 import { env } from '@env';
-import { initContract, tsRestFetchApi } from '@ts-rest/core';
+import { ApiFetcherArgs, initContract, tsRestFetchApi } from '@ts-rest/core';
 import { initQueryClient } from '@ts-rest/react-query';
-import { getSession } from '@users/users.helpers';
+import { getSession } from 'next-auth/react';
+import { failAndRetryAsync } from '@common/common.helpers';
+import { isTokenValid, refreshToken } from '@users/users.helpers';
+import { REFRESH_TOKEN_MAX_RETRIES } from '@users/users.constants';
+
+const initCustomFetch = () => ({
+  customFetch: async (fetchOptions: ApiFetcherArgs) => {
+    const session = await getSession();
+
+    if (session && !(await isTokenValid())) {
+      await failAndRetryAsync(refreshToken, REFRESH_TOKEN_MAX_RETRIES);
+    }
+
+    return tsRestFetchApi({
+      ...fetchOptions,
+      headers: {
+        ...fetchOptions.headers,
+        ...(session?.accessToken && {
+          Authorization: `Bearer ${session?.accessToken}`,
+        }),
+      },
+    });
+  },
+});
+export const { customFetch: api } = initCustomFetch();
 
 const contract = initContract();
-
 const apiContract = contract.router(
   {
-    auth: authContract,
+    users: usersContract,
   },
   {
     validateResponseOnClient: true,
@@ -19,25 +42,5 @@ const apiContract = contract.router(
 export const apiClient = initQueryClient(apiContract, {
   baseUrl: env.API_URL,
   baseHeaders: {},
-  api: async (fetchOptions) => {
-    const session = await getSession();
-
-    // Check validity
-    if (session && Date.parse(session?.accessTokenValidUntil) > Date.now()) {
-      console.log('invalid');
-
-      // Refresh validity
-      // await until refreshed
-    }
-
-    return tsRestFetchApi({
-      ...fetchOptions,
-      headers: {
-        ...fetchOptions.headers,
-        ...(session && {
-          Authorization: `Bearer ${session?.accessToken}`,
-        }),
-      },
-    });
-  },
+  api,
 });

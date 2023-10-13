@@ -1,4 +1,4 @@
-import { authContract } from '@users/users.contract';
+import { usersContract } from '@users/users.contract';
 import { ClientInferResponseBody } from '@ts-rest/core';
 
 export const AuthFlowType = {
@@ -26,7 +26,7 @@ export type SignInCredentialsType = (typeof SignInCredentialsType)[keyof typeof 
 export type AuthFlow = {
   type?: AuthFlowType;
   formType: AuthFlowFormType;
-} & Partial<ClientInferResponseBody<typeof authContract.init, 200>>;
+} & Partial<ClientInferResponseBody<typeof usersContract.initAuth, 200>>;
 
 export const UserRole = {
   Basic: 'Basic',

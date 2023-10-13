@@ -21,7 +21,7 @@ export const AuthFlowSignUpInfoForm = () => {
     },
   });
 
-  const { mutateAsync: signUpInfo, isLoading: isSigningUpInfo } = apiClient.auth.signUpInfo.useMutation({
+  const { mutateAsync: signUpInfo, isLoading: isSigningUpInfo } = apiClient.users.signUpInfo.useMutation({
     mutationKey: authMutationKeys.authFlow(),
   });
 

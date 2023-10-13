@@ -12,9 +12,9 @@ import { z } from 'zod';
 
 const contract = initContract();
 
-export const authContract = contract.router(
+export const usersContract = contract.router(
   {
-    init: {
+    initAuth: {
       method: 'POST',
       path: '/access',
       body: AuthInitSchema,

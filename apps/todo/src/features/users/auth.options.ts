@@ -19,7 +19,7 @@ export const authOptions: AuthOptions = {
     Credentials({
       id: AUTH_CREDENTIALS_PROVIDER_SIGN_IN_ID,
       authorize: async (credentials) => {
-        const { body, status } = await apiClient.auth.signIn.mutation({
+        const { body, status } = await apiClient.users.signIn.mutation({
           body: credentials as z.infer<typeof SignInSchema>,
         });
 
@@ -41,13 +41,13 @@ export const authOptions: AuthOptions = {
     Credentials({
       id: AUTH_CREDENTIALS_PROVIDER_SIGN_UP_ID,
       authorize: async (credentials) => {
-        const { body: signUpBody, status: signUpStatus } = await apiClient.auth.signUp.mutation({
+        const { body: signUpBody, status: signUpStatus } = await apiClient.users.signUp.mutation({
           body: credentials as z.infer<typeof SignUpSchema>,
         });
 
         if (signUpStatus !== 200) return null;
 
-        const { status: setPasswordStatus } = await apiClient.auth.setPassword.mutation({
+        const { status: setPasswordStatus } = await apiClient.users.setPassword.mutation({
           body: {
             password: USER_FAKE_PASSWORD,
             userId: signUpBody.userId,
@@ -57,7 +57,7 @@ export const authOptions: AuthOptions = {
           },
         });
 
-        const { body: signInBody, status: signInStatus } = await apiClient.auth.signIn.mutation({
+        const { body: signInBody, status: signInStatus } = await apiClient.users.signIn.mutation({
           body: {
             password: USER_FAKE_PASSWORD,
             mobilePhoneNumber: (credentials as z.infer<typeof SignUpSchema>).mobilePhoneNumber,

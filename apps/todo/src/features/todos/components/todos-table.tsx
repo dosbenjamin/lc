@@ -61,7 +61,6 @@ export const TodosTable = () => {
       <AgGridReact<Todo>
         rowData={secretTodos}
         columnDefs={columnDefs}
-        sideBar={true}
         defaultColDef={{
           editable: true,
           sortable: true,
@@ -75,6 +74,7 @@ export const TodosTable = () => {
         onColumnEverythingChanged={saveGridPreference}
         onSortChanged={saveGridPreference}
         onColumnResized={saveGridPreference}
+        onColumnMoved={saveGridPreference}
       />
     </div>
   );

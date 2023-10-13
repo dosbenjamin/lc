@@ -20,3 +20,7 @@ export const cn = cx;
 export const getTheme = async (): Promise<ThemeType> => (await getSession())?.user.theme ?? DEFAULT_THEME;
 
 export const getQueryClient = cache(() => new QueryClient());
+
+export const failAndRetryAsync = async <Fn extends () => Promise<void>>(promise: Fn, retries = 5): Promise<void> => {
+  return retries === 0 ? Promise.reject() : promise().catch(() => failAndRetryAsync(promise, retries - 1));
+};

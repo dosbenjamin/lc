@@ -18,7 +18,7 @@ export const AuthFlowInitForm = () => {
     resolver: zodResolver(AuthInitSchema),
   });
 
-  const { mutateAsync: initAuth, isLoading: isInitializingAuth } = apiClient.auth.init.useMutation({
+  const { mutateAsync: initAuth, isLoading: isInitializingAuth } = apiClient.users.initAuth.useMutation({
     mutationKey: authMutationKeys.authFlow(),
     onSuccess: ({ body }) => initAuthFlow(body),
   });

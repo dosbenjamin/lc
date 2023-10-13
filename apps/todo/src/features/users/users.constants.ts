@@ -13,3 +13,5 @@ export const USER_AUTHORIZATIONS: Record<UserRole, UserRole[]> = {
   Moderator: [UserRole.Moderator, UserRole.Admin],
   Admin: [UserRole.Admin],
 };
+
+export const REFRESH_TOKEN_MAX_RETRIES = 5;

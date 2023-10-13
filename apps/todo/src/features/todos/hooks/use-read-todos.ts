@@ -9,6 +9,7 @@ export const useReadTodos = () =>
     queryFn: () =>
       fetch(nextRoutes.todosApi(), {
         method: 'GET',
+        cache: 'no-store',
       }).then((response) => response.json()),
     staleTime: Infinity,
   });

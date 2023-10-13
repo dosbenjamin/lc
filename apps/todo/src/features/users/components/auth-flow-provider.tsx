@@ -1,6 +1,6 @@
 'use client';
 
-import { authContract } from '@users/users.contract';
+import { usersContract } from '@users/users.contract';
 import { authMutationKeys } from '@users/users.helpers';
 import { AuthFlow, AuthFlowFormType, AuthFlowType, SignInCredentialsType } from '@users/users.types';
 import { AuthFlowContext } from '@users/contexts/auth-flow-context';
@@ -13,7 +13,7 @@ import { type PropsWithChildren, useEffect, useMemo, useState, useCallback } fro
 type AuthFlowProviderProps = PropsWithChildren;
 
 const authFlowDispatcher: [
-  (authInit: ClientInferResponseBody<typeof authContract.init, 200>) => boolean,
+  (authInit: ClientInferResponseBody<typeof usersContract.initAuth, 200>) => boolean,
   AuthFlowType,
 ][] = [
   [({ isSignUpFlow }) => isSignUpFlow, AuthFlowType.SignUp],
@@ -72,7 +72,7 @@ export const AuthFlowProvider = ({ children }: AuthFlowProviderProps) => {
     [authFlowForms],
   );
 
-  const initAuthFlow = (authInit: ClientInferResponseBody<typeof authContract.init, 200>): void => {
+  const initAuthFlow = (authInit: ClientInferResponseBody<typeof usersContract.initAuth, 200>): void => {
     const flowType = authFlowDispatcher.find(([predicate]) => predicate(authInit));
 
     const nextAuthFlow = { ...authFlow, ...authInit, type: flowType?.[1] };
