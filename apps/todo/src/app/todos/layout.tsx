@@ -8,6 +8,7 @@ import { ThemeSwitcher } from '@common/components/theme-switcher';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 import { UserAuthorizationGuard } from '@users/components/user-authorization-guard.server';
+import { TodosAmount } from '@todos/components/todos-amount';
 
 type TodosLayoutProps = PropsWithChildren;
 
@@ -25,6 +26,7 @@ const TodosLayout = async ({ children }: TodosLayoutProps) => {
           <UserRoleSelect />
         </div>
         <div className="flex gap-4">
+          <TodosAmount />
           <p>Logged as {session?.user.mobilePhoneNumber}</p>
           <SignOutButton />
         </div>

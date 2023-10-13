@@ -1,37 +1,19 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@common/components/ui/table';
-import { getSecretTodos } from '@todos/todos.helpers';
+import { getQueryClient } from '@common/common.helpers';
+import { Hydrate, dehydrate } from '@tanstack/react-query';
+import { TodosTable } from '@todos/components/todos-table';
+import { getAllTodos, todosQueryKeys } from '@todos/todos.helpers';
 
-const SecretTodosPage = () => {
-  const todos = getSecretTodos();
+const SecretTodosPage = async () => {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery(todosQueryKeys.readTodos(), getAllTodos);
+  const dehydratedState = dehydrate(queryClient);
 
   return (
     <>
       <h2 className="text-3xl">Secret todos</h2>
-      <Table>
-        <TableCaption>A list of todos</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-96">Task</TableHead>
-            <TableHead>Completed</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {todos.map(({ id, task, isCompleted }) => (
-            <TableRow key={id}>
-              <TableCell>{task}</TableCell>
-              <TableCell>{String(isCompleted)}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Hydrate state={dehydratedState}>
+        <TodosTable />
+      </Hydrate>
     </>
   );
 };

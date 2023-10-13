@@ -1,12 +1,14 @@
 import { nextRoutes } from '@common/common.helpers';
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@todos/todos.helpers';
+import { todosQueryKeys } from '@todos/todos.helpers';
+import type { Todo } from '@todos/todos.types';
 
 export const useReadTodos = () =>
-  useQuery({
-    queryKey: queryKeys.readTodos(),
+  useQuery<Todo[]>({
+    queryKey: todosQueryKeys.readTodos(),
     queryFn: () =>
       fetch(nextRoutes.todosApi(), {
         method: 'GET',
       }).then((response) => response.json()),
+    staleTime: Infinity,
   });
