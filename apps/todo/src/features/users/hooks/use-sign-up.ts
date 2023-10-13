@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 export const useSignUp = () =>
   useMutation<SignInResponse | undefined, unknown, z.infer<typeof SignUpSchema>>({
-    mutationKey: authMutationKeys.getAuthFlow(),
+    mutationKey: authMutationKeys.authFlow(),
     mutationFn: async (credentials) =>
       await signIn(AUTH_CREDENTIALS_PROVIDER_SIGN_UP_ID, {
         redirect: false,

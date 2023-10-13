@@ -6,7 +6,7 @@ import type { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 export const authMutationKeys = {
-  getAuthFlow: () => ['auth-flow'],
+  authFlow: () => ['auth-flow'],
 };
 
 export const isUserAuthorized = (role: UserRole, currentUserRole: UserRole | undefined): boolean =>

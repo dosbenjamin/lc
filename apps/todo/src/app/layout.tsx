@@ -2,7 +2,7 @@ import '@styles/globals.css';
 import { SessionProvider } from '@users/components/session-provider';
 import { QueryClientProvider } from '@common/components/query-client-provider';
 import type { PropsWithChildren } from 'react';
-import { getTheme } from '@theme/theme.helpers';
+import { getTheme } from '@common/common.helpers';
 
 type RootLayoutProps = PropsWithChildren;
 

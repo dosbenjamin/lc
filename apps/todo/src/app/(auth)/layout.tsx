@@ -5,7 +5,7 @@ import type { PropsWithChildren } from 'react';
 type AuthLayoutProps = PropsWithChildren;
 
 const AuthLayout = async ({ children }: AuthLayoutProps) => {
-  await redirectIfAuthentificated(nextRoutes.getTodos());
+  await redirectIfAuthentificated(nextRoutes.todos());
 
   return (
     <main className="flex [&>*]:h-screen">

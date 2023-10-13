@@ -4,7 +4,7 @@ import { SignOutButton } from '@users/components/auth-flow-sign-out-button';
 import { UserRoleSelect } from '@users/components/user-role-select';
 import { nextRoutes } from '@common/common.helpers';
 import { Button } from '@common/components/ui/button';
-import { ThemeSwitcher } from '@theme/components/theme-switcher';
+import { ThemeSwitcher } from '@common/components/theme-switcher';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 import { UserAuthorizationGuard } from '@users/components/user-authorization-guard.server';
@@ -19,7 +19,7 @@ const TodosLayout = async ({ children }: TodosLayoutProps) => {
       <header className="flex justify-between items-center">
         <div className="flex gap-8 items-center flex-1">
           <h1>
-            <Link href={nextRoutes.getHome()}>Todo</Link>
+            <Link href={nextRoutes.home()}>Todo</Link>
           </h1>
           <ThemeSwitcher />
           <UserRoleSelect />
@@ -33,13 +33,13 @@ const TodosLayout = async ({ children }: TodosLayoutProps) => {
         <aside className="w-64 flex-shrink-0">
           <nav className="flex flex-col gap-8 items-start">
             <div className="flex flex-col gap-4">
-              <Link href={nextRoutes.getTodos()}>Public todos</Link>
+              <Link href={nextRoutes.todos()}>Public todos</Link>
               <UserAuthorizationGuard role={UserRole.Moderator}>
-                <Link href={nextRoutes.getSecretTodos()}>Secret todos</Link>
+                <Link href={nextRoutes.secretTodos()}>Secret todos</Link>
               </UserAuthorizationGuard>
             </div>
             <Button asChild>
-              <Link href={nextRoutes.getCreateTodo()}>Create todo</Link>
+              <Link href={nextRoutes.createTodo()}>Create todo</Link>
             </Button>
           </nav>
         </aside>

@@ -30,7 +30,7 @@ const authFlowDispatcher: [
 ];
 
 const isAuthMutationSucceded = (mutation: Mutation | undefined) =>
-  mutation?.options.mutationKey?.toString() === authMutationKeys.getAuthFlow().toString() &&
+  mutation?.options.mutationKey?.toString() === authMutationKeys.authFlow().toString() &&
   mutation?.state.status === 'success';
 
 export const AuthFlowProvider = ({ children }: AuthFlowProviderProps) => {
@@ -88,7 +88,7 @@ export const AuthFlowProvider = ({ children }: AuthFlowProviderProps) => {
       if (!isAuthMutationSucceded(mutation) || !nextAuthFlowForm) return;
 
       nextAuthFlowForm?.isLast
-        ? router.push(nextRoutes.getTodos())
+        ? router.push(nextRoutes.todos())
         : setAuthFlow((authFlow) => ({ ...authFlow, formType: nextAuthFlowForm?.type }));
     });
 

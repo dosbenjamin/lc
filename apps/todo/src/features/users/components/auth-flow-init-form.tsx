@@ -19,7 +19,7 @@ export const AuthFlowInitForm = () => {
   });
 
   const { mutateAsync: initAuth, isLoading: isInitializingAuth } = apiClient.auth.init.useMutation({
-    mutationKey: authMutationKeys.getAuthFlow(),
+    mutationKey: authMutationKeys.authFlow(),
     onSuccess: ({ body }) => initAuthFlow(body),
   });
 

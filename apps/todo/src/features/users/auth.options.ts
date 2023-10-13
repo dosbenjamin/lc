@@ -7,12 +7,11 @@ import {
 } from '@users/users.constants';
 import { SignInSchema, SignUpSchema } from '@users/users.schemas';
 import { SignInCredentialsType } from '@users/users.types';
-import { nextRoutes } from '@common/common.helpers';
 import { env } from '@env';
-import { DEFAULT_THEME } from '@theme/theme.constants';
 import { AuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
+import { DEFAULT_THEME } from '@common/common.constants';
 
 export const authOptions: AuthOptions = {
   secret: env.NEXTAUTH_SECRET,
@@ -27,7 +26,7 @@ export const authOptions: AuthOptions = {
         if (status !== 200) return null;
 
         return {
-          id: '348dad0c-b321-4e31-60a5-08dbca63b6b8',
+          id: 'unknown id',
           theme: DEFAULT_THEME,
           role: DEFAULT_USER_ROLE,
           mobilePhoneNumber: (credentials as z.infer<typeof SignInSchema>).mobilePhoneNumber,
@@ -120,6 +119,6 @@ export const authOptions: AuthOptions = {
     },
   },
   pages: {
-    signIn: nextRoutes.getHome(),
+    signIn: '/',
   },
 };

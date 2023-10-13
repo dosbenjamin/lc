@@ -22,7 +22,7 @@ export const AuthFlowSignUpInfoForm = () => {
   });
 
   const { mutateAsync: signUpInfo, isLoading: isSigningUpInfo } = apiClient.auth.signUpInfo.useMutation({
-    mutationKey: authMutationKeys.getAuthFlow(),
+    mutationKey: authMutationKeys.authFlow(),
   });
 
   const handleSignUpInfo = form.handleSubmit(async (values) => {

@@ -17,7 +17,7 @@ const HomePage = async () => {
         <UserAuthorizationGuard role={UserRole.Moderator}>
           <p>You have {secretTodos.length} secret todos</p>
         </UserAuthorizationGuard>
-        <Link href={nextRoutes.getTodos()}>Go back to todos</Link>
+        <Link href={nextRoutes.todos()}>Go back to todos</Link>
       </main>
     );
   }
@@ -25,10 +25,10 @@ const HomePage = async () => {
   return (
     <main className="flex gap-4 p-8">
       <Button asChild variant="link">
-        <Link href={nextRoutes.getLogin()}>Login</Link>
+        <Link href={nextRoutes.login()}>Login</Link>
       </Button>
       <Button asChild variant="link">
-        <Link href={nextRoutes.getSignUp()}>Sign up</Link>
+        <Link href={nextRoutes.signUp()}>Sign up</Link>
       </Button>
     </main>
   );

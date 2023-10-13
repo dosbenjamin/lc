@@ -29,7 +29,7 @@ export const CreateTodoForm = () => {
 
   const handleCreateTodo = form.handleSubmit(async (values) => {
     await createTodo(values);
-    router.push(nextRoutes.getTodos());
+    router.push(nextRoutes.todos());
     router.refresh();
   });
 

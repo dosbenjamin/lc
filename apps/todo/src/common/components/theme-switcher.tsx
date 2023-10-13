@@ -1,9 +1,9 @@
 'use client';
 
+import { THEMES } from '@common/common.constants';
+import { ThemeType } from '@common/common.types';
 import { RadioGroup } from '@common/components/ui/radio-group';
 import { RadioGroupItem } from '@radix-ui/react-radio-group';
-import { THEMES } from '@theme/theme.constants';
-import { ThemeType } from '@theme/theme.types';
 import { Circle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
