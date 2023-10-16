@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 import { notFound, redirect } from 'next/navigation';
 
 export const authMutationKeys = {
+  authFlowInit: () => ['auth-flow-init'],
   authFlow: () => ['auth-flow'],
 };
 
