@@ -7,8 +7,21 @@ import { failAndRetryAsync } from '@common/common.helpers';
 import { isTokenValid, refreshToken } from '@users/users.helpers';
 import { REFRESH_TOKEN_MAX_RETRIES } from '@users/users.constants';
 
-const initCustomFetch = () => ({
-  customFetch: async (fetchOptions: ApiFetcherArgs) => {
+const contract = initContract();
+const apiContract = contract.router(
+  {
+    users: usersContract,
+  },
+  {
+    validateResponseOnClient: true,
+    pathPrefix: '/api',
+  },
+);
+
+export const apiClient = initQueryClient(apiContract, {
+  baseUrl: env.API_URL,
+  baseHeaders: {},
+  api: async (fetchOptions: ApiFetcherArgs) => {
     const session = await getSession();
 
     if (session && !(await isTokenValid())) {
@@ -25,22 +38,4 @@ const initCustomFetch = () => ({
       },
     });
   },
-});
-export const { customFetch: api } = initCustomFetch();
-
-const contract = initContract();
-const apiContract = contract.router(
-  {
-    users: usersContract,
-  },
-  {
-    validateResponseOnClient: true,
-    pathPrefix: '/api',
-  },
-);
-
-export const apiClient = initQueryClient(apiContract, {
-  baseUrl: env.API_URL,
-  baseHeaders: {},
-  api,
 });

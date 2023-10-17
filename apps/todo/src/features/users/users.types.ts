@@ -26,7 +26,12 @@ export type SignInCredentialsType = (typeof SignInCredentialsType)[keyof typeof 
 export type AuthFlow = {
   type?: AuthFlowType;
   formType: AuthFlowFormType;
-} & Partial<ClientInferResponseBody<typeof usersContract.initAuth, 200>>;
+  mobilePhoneNumber?: string;
+  isSignUpFlow?: boolean;
+  isSignInFlow?: boolean;
+  signInCredentialsType?: SignInCredentialsType;
+  mustCompleteSignUpInfo?: boolean;
+};
 
 export const UserRole = {
   Basic: 'Basic',
